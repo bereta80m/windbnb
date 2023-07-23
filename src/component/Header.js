@@ -8,15 +8,9 @@ import { Button, ButtonGroup } from "@mui/material";
 import { UseGlobal } from "../context/GlobalContext";
 
 function Header() {
-  const [openDialog, setOpenDialog] = useState(false);
-  const { newList,locationSearch,maxGuest } = UseGlobal()
+  const { openDialog, setOpenDialog,newList,locationSearch,maxGuest,handleOpenDialog,handleCloseDialog } = UseGlobal()
   
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
-  };
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
+
   
   return (
     <div className="lg:flex md:flex sm:grid  w-full px-20 py-4 justify-between sticky top-0 bg-white z-20 ">

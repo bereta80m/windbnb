@@ -21,6 +21,13 @@ function SearchDialog({ IsOpen, CloseDialog }) {
     isdroppedOpen, setIsdroppedOpen
   } = UseGlobal();
 
+  const handleOpenDrop = () => {
+    setIsdroppedOpen(true)
+  }
+  const handleCloseDrop = () => {
+    setIsdroppedOpen(false)
+    console.log(isdroppedOpen)
+  }
   const handleSelected = (item, index) => {
     try {
       setMaxGuest(item.maxGuests);
@@ -36,6 +43,18 @@ function SearchDialog({ IsOpen, CloseDialog }) {
     setMaxGuest(Suma)
   }, [maxChildren,maxAdults])
 
+  useEffect(() => {
+    const handleClickOutSide = (e) =>{
+      if(isdroppedOpen && e.target.classList.contains("MainDropButton")){
+        handleCloseDrop()
+      }
+      console.log(e.target.classList)
+    }
+    window.addEventListener("click", handleClickOutSide)
+    return ()=>{
+      window.removeEventListener("click", handleClickOutSide)
+    }
+  }, [isdroppedOpen,handleCloseDrop])
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (IsOpen && e.target.classList.contains("Container_dialog")) {
@@ -58,7 +77,7 @@ function SearchDialog({ IsOpen, CloseDialog }) {
           className="Container_dialog top-0 left-0  flex flex-col fixed w-full h-screen bg-black/50 "
         >
           <div className="dialog_content text-white w-full bg-white  ">
-            <div className="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 xs:grid-cols-1 xxs:grid-cols-1 items-center justify-center gap-3 my-16 px-20 w-full ">
+            <div className="MainDropButton grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 xs:grid-cols-1 xxs:grid-cols-1 items-center justify-center gap-3 my-16 px-20 w-full ">
               <div className="border px-3 border-black rounded-xl">
                 <p className="text-black text-xs font-semibold">Location</p>
                 <input
@@ -71,16 +90,15 @@ function SearchDialog({ IsOpen, CloseDialog }) {
               </div>
 
               <div
-                className="MainDropButton flex flex-col border cursor-pointer  relative gap-2  border-black rounded-xl"
-                onClick={() => setIsdroppedOpen((Prev)=>!Prev)}
+                className=" flex flex-col border cursor-pointer  relative gap-2  border-black rounded-xl"
               >
-                <p className="text-black top-0  text-xs absolute font-semibold">
+                <p className="text-black top-0  text-xs absolute font-semibold" >
                   Guests
                 </p>
-                <p className="text-black/50 p-3 cursor-pointer">{maxGuest === 0 ? "Add guests" : maxGuest}</p>
+                <p onClick={()=>handleOpenDrop()} className="text-black/50 p-3 cursor-pointer">{maxGuest === 0 ? "Add guests" : maxGuest}</p>
                 {isdroppedOpen ? (
-                  <div className="flex flex-col border mt-14 px-5 py-2 gap-5 bg-white w-full h-60 absolute rounded-2xl shadow-lg ">
-                    {/*<CloseIcon onClick={()=> setIsdroppedOpen(false)} className="absolute z-20 text-black right-0 m-2 cursor-pointer"/> */}
+                  <div className=" flex flex-col border mt-14 px-5 py-2 gap-5 bg-white w-full h-60 absolute rounded-2xl shadow-lg ">
+                    <CloseIcon onClick={()=>handleCloseDrop()} className="absolute z-20 text-black right-0 m-2 cursor-pointer"/>
                     <div className="flex flex-col gap-3  text-black">
                       <p className="font-bold">Adults</p>
                       <p className="text-black/50 ">Ages 13 or above</p>

@@ -11,7 +11,14 @@ function GlobalProvider({children}) {
   locationSearch.toLowerCase() === "" ? datos : datos.city.toLowerCase().includes(locationSearch.toLowerCase()) || datos.country.toLowerCase().includes(locationSearch.toLowerCase()))
   const [placesList, setPlacesList] = useState([...MyDatos])
   const [isdroppedOpen, setIsdroppedOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
   const HandleSearch = (item)=>{
     if (locationSearch && maxGuest) {
       const newList2 = MyDatos.filter((datos, index, array) =>{
@@ -31,7 +38,7 @@ function GlobalProvider({children}) {
     }
   }
   return (
-    <GlobalContext.Provider value={{ locationSearch,isdroppedOpen, setIsdroppedOpen, setLocationSearch,maxGuest, setMaxGuest, newList,HandleSearch,placesList }}>
+    <GlobalContext.Provider value={{openDialog, setOpenDialog,handleOpenDialog,handleCloseDialog, locationSearch,isdroppedOpen, setIsdroppedOpen, setLocationSearch,maxGuest, setMaxGuest, newList,HandleSearch,placesList }}>
       {children}
     </GlobalContext.Provider>
   )
